@@ -1,0 +1,18 @@
+.noFilesNotification {
+	position: absolute;
+	bottom: -5em;
+
+	&:before {
+		content: "";
+		position: absolute;
+		bottom: 100%;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 0;
+
+		$triangle-size: 7px;
+		border-bottom: $triangle-size solid rgb(115, 115, 115);
+		border-left: $triangle-size solid transparent;
+		border-right: $triangle-size solid transparent;
+	}
+}
