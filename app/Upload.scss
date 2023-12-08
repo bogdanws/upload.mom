@@ -2,14 +2,25 @@
 	$width: min(100%, 500px);
 	$height: calc($width * 0.75);
 
+
 	min-width: $width;
 	min-height: $height;
+	@media (max-width: 500px) {
+		width: 100%;
+		height: 100%;
+	}
 }
 
 .uploadInnerContainer {
 	position: relative;
 	width: 100%;
 	height: 100%;
+
+	h1 {
+		background: linear-gradient(to bottom, #fff, #adadad);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
 }
 
 .noFilesNotification {
