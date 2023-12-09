@@ -1,9 +1,9 @@
 .uploadOuterContainer {
-	$width: min(100%, 500px);
-	$height: calc($width * 0.75);
+	$width: min(100%, 700px);
+	$height: calc($width * 0.6);
 
 
-	min-width: $width;
+	width: $width;
 	min-height: $height;
 	@media (max-width: 500px) {
 		width: 100%;
