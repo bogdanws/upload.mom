@@ -1,5 +1,5 @@
 import "./Upload.scss";
-import {UploadButton} from "@/components/UploadButton";
+import {PrimaryActionButton} from "@/components/PrimaryActionButton";
 import {UploadCamera, UploadComputer, UploadLink, UploadMicrophone, UploadScreen} from "@/app/UploadMethods";
 import {useCallback, useState} from "react";
 
@@ -60,7 +60,7 @@ export function Upload({}) {
 						<UploadMicrophone uploadedFiles={uploadedFiles} setUploadedFiles={setUploadedFiles}/>
 					</div>
 				</div>
-				{uploadedFiles.length > 0 && <UploadButton uploadedFiles={uploadedFiles}/>}
+				{uploadedFiles.length > 0 && <PrimaryActionButton text={"Upload"} />}
 			</div>
 		</div>
 	);
