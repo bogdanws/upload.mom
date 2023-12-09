@@ -1,7 +1,24 @@
 import {BsCameraFill, BsDisplayFill, BsFolderFill, BsLink45Deg, BsMicFill} from "react-icons/bs";
 import React, {useState} from "react";
 
-interface UploadProps {
+export function UploadMethods(props: {
+	uploadedFiles: File[],
+	setUploadedFiles: React.Dispatch<React.SetStateAction<File[]>>
+}) {
+	return <div id={"uploadMethodsContainer"}>
+		<p className="text-neutral-200 text-center"><span
+			className={"font-semibold text-blue-200"}>Drag and drop</span> your files here, or import from:</p>
+		<div className={"flex flex-row items-stretch justify-center flex-wrap m-5"}>
+			<UploadComputer uploadedFiles={props.uploadedFiles} setUploadedFiles={props.setUploadedFiles}/>
+			<UploadLink uploadedFiles={props.uploadedFiles} setUploadedFiles={props.setUploadedFiles}/>
+			<UploadCamera uploadedFiles={props.uploadedFiles} setUploadedFiles={props.setUploadedFiles}/>
+			<UploadScreen uploadedFiles={props.uploadedFiles} setUploadedFiles={props.setUploadedFiles}/>
+			<UploadMicrophone uploadedFiles={props.uploadedFiles} setUploadedFiles={props.setUploadedFiles}/>
+		</div>
+	</div>;
+}
+
+type UploadProps = {
   uploadedFiles: File[];
   setUploadedFiles: React.Dispatch<React.SetStateAction<File[]>>;
 }
@@ -110,3 +127,4 @@ export function UploadMicrophone({uploadedFiles, setUploadedFiles}: UploadProps)
 		<span className="opacity-75 mt-2">Audio recording</span>
 	</button>;
 }
+

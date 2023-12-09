@@ -1,6 +1,6 @@
 import "./Upload.scss";
 import {PrimaryActionButton} from "@/components/PrimaryActionButton";
-import {UploadCamera, UploadComputer, UploadLink, UploadMicrophone, UploadScreen} from "@/app/UploadMethods";
+import {UploadMethods} from "@/app/UploadMethods";
 import {useCallback, useState} from "react";
 
 export function Upload({}) {
@@ -49,18 +49,8 @@ export function Upload({}) {
 				className={`uploadInnerContainer p-7 pt-4 border-2 ${isDragging ? 'border-blue-500' : 'border-neutral-500'} border-dotted rounded transition duration-300 flex flex-col items-center justify-center`}>
 				{uploadedFiles.length === 0 &&
 					<h1 className="mb-5 text-3xl text-neutral-100 font-bold text-center">Upload your files</h1>}
-				<div id={"uploadMethodsContainer"}>
-					<p className="text-neutral-200 text-center"><span
-						className={"font-semibold text-blue-200"}>Drag and drop</span> your files here, or import from:</p>
-					<div className={"flex flex-row items-stretch justify-center flex-wrap m-5"}>
-						<UploadComputer uploadedFiles={uploadedFiles} setUploadedFiles={setUploadedFiles}/>
-						<UploadLink uploadedFiles={uploadedFiles} setUploadedFiles={setUploadedFiles}/>
-						<UploadCamera uploadedFiles={uploadedFiles} setUploadedFiles={setUploadedFiles}/>
-						<UploadScreen uploadedFiles={uploadedFiles} setUploadedFiles={setUploadedFiles}/>
-						<UploadMicrophone uploadedFiles={uploadedFiles} setUploadedFiles={setUploadedFiles}/>
-					</div>
-				</div>
-				{uploadedFiles.length > 0 && <PrimaryActionButton text={"Upload"} />}
+				<UploadMethods uploadedFiles={uploadedFiles} setUploadedFiles={setUploadedFiles}/>
+				{uploadedFiles.length > 0 && <PrimaryActionButton text={"Upload"}/>}
 			</div>
 		</div>
 	);
