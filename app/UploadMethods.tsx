@@ -1,10 +1,10 @@
 import {BsCameraFill, BsDisplayFill, BsFolderFill, BsLink45Deg, BsMicFill} from "react-icons/bs";
 import React, {useState} from "react";
 
-export function UploadMethods(props: {
+export const UploadMethods = React.memo((props: {
 	uploadedFiles: File[],
 	setUploadedFiles: React.Dispatch<React.SetStateAction<File[]>>
-}) {
+}) => {
 	return <div id={"uploadMethodsContainer"}>
 		<p className="text-neutral-200 text-center"><span
 			className={"font-semibold text-blue-200"}>Drag and drop</span> your files here, or import from:</p>
@@ -16,7 +16,7 @@ export function UploadMethods(props: {
 			<UploadMicrophone uploadedFiles={props.uploadedFiles} setUploadedFiles={props.setUploadedFiles}/>
 		</div>
 	</div>;
-}
+});
 
 type UploadProps = {
   uploadedFiles: File[];

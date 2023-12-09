@@ -1,7 +1,7 @@
 import "./Upload.scss";
 import {PrimaryActionButton} from "@/components/PrimaryActionButton";
 import {UploadMethods} from "@/app/UploadMethods";
-import {useCallback, useState} from "react";
+import React, {useCallback, useState} from "react";
 
 export function Upload({}) {
 	const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
@@ -55,3 +55,4 @@ export function Upload({}) {
 		</div>
 	);
 }
+
