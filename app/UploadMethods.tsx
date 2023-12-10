@@ -1,31 +1,30 @@
 import {BsCameraFill, BsDisplayFill, BsFolderFill, BsLink45Deg, BsMicFill} from "react-icons/bs";
 import React, {useState} from "react";
+import {UploadStep} from "@/app/Upload";
 
 export const UploadMethods = React.memo((props: {
 	uploadedFiles: File[],
-	setUploadedFiles: React.Dispatch<React.SetStateAction<File[]>>
-	setUploadStep: React.Dispatch<React.SetStateAction<number>>
+	addFiles: (files: File[]) => void,
 }) => {
 	return <div id={"uploadMethodsContainer"}>
 		<p className="text-neutral-200 text-center"><span
 			className={"font-semibold text-blue-200"}>Drag and drop</span> your files here, or import from:</p>
 		<div className={"flex flex-row items-stretch justify-center flex-wrap m-5"}>
-			<UploadComputer uploadedFiles={props.uploadedFiles} setUploadedFiles={props.setUploadedFiles} setUploadStep={props.setUploadStep}/>
-			<UploadLink uploadedFiles={props.uploadedFiles} setUploadedFiles={props.setUploadedFiles} setUploadStep={props.setUploadStep}/>
-			<UploadCamera uploadedFiles={props.uploadedFiles} setUploadedFiles={props.setUploadedFiles} setUploadStep={props.setUploadStep}/>
-			<UploadScreen uploadedFiles={props.uploadedFiles} setUploadedFiles={props.setUploadedFiles} setUploadStep={props.setUploadStep}/>
-			<UploadMicrophone uploadedFiles={props.uploadedFiles} setUploadedFiles={props.setUploadedFiles} setUploadStep={props.setUploadStep}/>
+			<UploadComputer uploadedFiles={props.uploadedFiles} addFiles={props.addFiles}/>
+			<UploadLink uploadedFiles={props.uploadedFiles} addFiles={props.addFiles}/>
+			<UploadCamera uploadedFiles={props.uploadedFiles} addFiles={props.addFiles}/>
+			<UploadScreen uploadedFiles={props.uploadedFiles} addFiles={props.addFiles}/>
+			<UploadMicrophone uploadedFiles={props.uploadedFiles} addFiles={props.addFiles}/>
 		</div>
 	</div>;
 });
 
 type UploadProps = {
   uploadedFiles: File[];
-  setUploadedFiles: React.Dispatch<React.SetStateAction<File[]>>;
-	setUploadStep: React.Dispatch<React.SetStateAction<number>>;
+	addFiles: (files: File[]) => void;
 }
 
-export function UploadComputer({uploadedFiles, setUploadedFiles, setUploadStep}: UploadProps) {
+export function UploadComputer({uploadedFiles, addFiles}: UploadProps) {
 	const fileInputRef = React.useRef<HTMLInputElement>(null);
 
 	const handleButtonClick = () => {
@@ -36,8 +35,7 @@ export function UploadComputer({uploadedFiles, setUploadedFiles, setUploadStep}:
 	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.files) {
 			// update the uploadedFiles state with the selected files
-			setUploadedFiles([...uploadedFiles, ...Array.from(event.target.files)]);
-			setUploadStep(1);
+			addFiles(Array.from(event.target.files));
 		}
 	};
 
@@ -61,7 +59,7 @@ export function UploadComputer({uploadedFiles, setUploadedFiles, setUploadStep}:
 	);
 }
 
-export function UploadLink({uploadedFiles, setUploadedFiles, setUploadStep}: UploadProps) {
+export function UploadLink({uploadedFiles, addFiles}: UploadProps) {
 	const [url, setUrl] = useState('');
 
 	const handleButtonClick = async () => {
@@ -69,8 +67,7 @@ export function UploadLink({uploadedFiles, setUploadedFiles, setUploadStep}: Upl
 			const response = await fetch(url);
 			const blob = await response.blob();
 			const file = new File([blob], 'downloadedFile');
-			setUploadedFiles([...uploadedFiles, file]);
-			setUploadStep(1);
+			addFiles([file]);
 		} catch (error) {
 			console.error('Error downloading file:', error);
 		}
@@ -88,7 +85,7 @@ export function UploadLink({uploadedFiles, setUploadedFiles, setUploadStep}: Upl
 	);
 }
 
-export function UploadCamera({uploadedFiles, setUploadedFiles, setUploadStep}: UploadProps) {
+export function UploadCamera({uploadedFiles, addFiles}: UploadProps) {
 	return <button
 		className="p-2 m-1 rounded hover:bg-gray-700 transition-all duration-300 flex flex-col items-center justify-center w-24">
 		<BsCameraFill size={20}/>
@@ -96,7 +93,7 @@ export function UploadCamera({uploadedFiles, setUploadedFiles, setUploadStep}: U
 	</button>;
 }
 
-export function UploadScreen({uploadedFiles, setUploadedFiles, setUploadStep}: UploadProps) {
+export function UploadScreen({uploadedFiles, addFiles}: UploadProps) {
 	return <button
 		className="p-2 m-1 rounded hover:bg-gray-700 transition-all duration-300 flex flex-col items-center justify-center w-24">
 		<BsDisplayFill size={20}/>
@@ -104,7 +101,7 @@ export function UploadScreen({uploadedFiles, setUploadedFiles, setUploadStep}: U
 	</button>;
 }
 
-export function UploadMicrophone({uploadedFiles, setUploadedFiles, setUploadStep}: UploadProps) {
+export function UploadMicrophone({uploadedFiles, addFiles}: UploadProps) {
 	return <button
 		className="p-2 m-1 rounded hover:bg-gray-700 transition-all duration-300 flex flex-col items-center justify-center w-24">
 		<BsMicFill size={20}/>
