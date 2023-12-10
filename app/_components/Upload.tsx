@@ -2,28 +2,24 @@
 import "./Upload.scss";
 import {PrimaryActionButton} from "@/components/PrimaryActionButton";
 import {UploadMethods} from "@/app/_components/UploadMethods";
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {UploadContainer} from "@/app/_components/UploadContainer";
 import {FileDisplay} from "@/app/_components/FileDisplay";
 import {AnimatePresence} from "framer-motion";
-
-enum UploadStep {
-	UploadMethods,
-	ViewFiles,
-}
+import {UploadSteps} from "@/app/_components/UploadSteps";
 
 export function Upload() {
 	const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-	const [uploadStep, setUploadStep] = useState<UploadStep>(UploadStep.UploadMethods);
+	const [uploadStep, setUploadStep] = useState<UploadSteps>(UploadSteps.UploadMethods);
 
 	// If there are no files, go back to the upload methods
 	useEffect(() => {
 		if (uploadedFiles.length === 0) {
-			setUploadStep(UploadStep.UploadMethods);
+			setUploadStep(UploadSteps.UploadMethods);
 		}
 	}, [uploadedFiles]);
 
-	function addFiles(files: File[]) {
+	const addFiles = useCallback((files: File[]) => {
 		if (files.length === 0) return;
 
 		// check old files to make sure none have the same name
@@ -31,28 +27,28 @@ export function Upload() {
 			.filter(file => file.size !== 0 && file.size < 1000000000); // filter out files that are too large or empty
 
 		setUploadedFiles(prevFiles => [...prevFiles, ...newFiles]);
-		setUploadStep(UploadStep.ViewFiles);
-	}
+		setUploadStep(UploadSteps.ViewFiles);
+	}, [uploadedFiles]);
 
-	function deleteFile(file: File) {
+	const deleteFile = useCallback((file: File) => {
 		setUploadedFiles(prevFiles => prevFiles.filter(f => f !== file));
-	}
+	}, []);
 
 	return (
 		<UploadContainer addFiles={addFiles}>
 			{/*<div className="gradient" TODO: Hide overflow />*/}
-			{uploadStep === UploadStep.UploadMethods && <>
+			{uploadStep === UploadSteps.UploadMethods && <>
 				{uploadedFiles.length === 0 &&
 					<h1 className="mb-5 text-3xl text-neutral-100 font-bold text-center">Upload your files</h1>}
-				<UploadMethods uploadedFiles={uploadedFiles} addFiles={addFiles}/>
+				<UploadMethods uploadedFiles={uploadedFiles} addFiles={addFiles} setUploadStep={setUploadStep}/>
 				{uploadedFiles.length > 0 &&
-					<PrimaryActionButton text={"View files"} onClick={() => setUploadStep(UploadStep.ViewFiles)}/>}
+					<PrimaryActionButton text={"View files"} onClick={() => setUploadStep(UploadSteps.ViewFiles)}/>}
 			</>}
-			{uploadStep === UploadStep.ViewFiles && <>
+			{uploadStep === UploadSteps.ViewFiles && <>
 				<div className="w-full flex flex-row items-center justify-between">
 					<p className="text-neutral-200 text-center">Click on a file to <span className="text-red-300">remove</span> it
 					</p>
-					<PrimaryActionButton text={"Add more"} onClick={() => setUploadStep(UploadStep.UploadMethods)}/>
+					<PrimaryActionButton text={"Add more"} onClick={() => setUploadStep(UploadSteps.UploadMethods)}/>
 				</div>
 				{/*	show all files*/}
 				<ul
