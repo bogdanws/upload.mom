@@ -1,10 +1,10 @@
 "use client";
 import "./Upload.scss";
 import {PrimaryActionButton} from "@/components/PrimaryActionButton";
-import {UploadMethods} from "@/app/UploadMethods";
+import {UploadMethods} from "@/app/_components/UploadMethods";
 import React, {useEffect, useState} from "react";
-import {UploadContainer} from "@/app/UploadContainer";
-import {FileDisplay} from "@/app/FileDisplay";
+import {UploadContainer} from "@/app/_components/UploadContainer";
+import {FileDisplay} from "@/app/_components/FileDisplay";
 
 enum UploadStep {
 	UploadMethods,
@@ -27,6 +27,7 @@ export function Upload() {
 		setUploadedFiles(prevFiles => [...prevFiles, ...newFiles]);
 		setUploadStep(UploadStep.ViewFiles);
 	}
+
 	function deleteFile(file: File) {
 		setUploadedFiles(prevFiles => prevFiles.filter(f => f !== file));
 	}
@@ -51,7 +52,6 @@ export function Upload() {
 				</div>
 			</>}
 		</UploadContainer>
-	)
-		;
+	);
 }
 

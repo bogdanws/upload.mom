@@ -1,5 +1,5 @@
 import React from 'react';
-import {Upload} from "@/app/Upload";
+import {Upload} from "@/app/_components/Upload";
 
 
 export default function Home() {
