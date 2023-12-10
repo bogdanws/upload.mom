@@ -9,21 +9,20 @@ export const UploadMethods = React.memo((props: {
 		<p className="text-neutral-200 text-center"><span
 			className={"font-semibold text-blue-200"}>Drag and drop</span> your files here, or import from:</p>
 		<div className={"flex flex-row items-stretch justify-center flex-wrap m-5"}>
-			<UploadComputer uploadedFiles={props.uploadedFiles} addFiles={props.addFiles}/>
-			<UploadLink uploadedFiles={props.uploadedFiles} addFiles={props.addFiles}/>
-			<UploadCamera uploadedFiles={props.uploadedFiles} addFiles={props.addFiles}/>
-			<UploadScreen uploadedFiles={props.uploadedFiles} addFiles={props.addFiles}/>
-			<UploadMicrophone uploadedFiles={props.uploadedFiles} addFiles={props.addFiles}/>
+			<UploadComputer addFiles={props.addFiles}/>
+			<UploadLink addFiles={props.addFiles}/>
+			<UploadCamera addFiles={props.addFiles}/>
+			<UploadScreen addFiles={props.addFiles}/>
+			<UploadMicrophone addFiles={props.addFiles}/>
 		</div>
 	</div>;
 });
 
 type UploadProps = {
-  uploadedFiles: File[];
 	addFiles: (files: File[]) => void;
 }
 
-export function UploadComputer({uploadedFiles, addFiles}: UploadProps) {
+export function UploadComputer({addFiles}: UploadProps) {
 	const fileInputRef = React.useRef<HTMLInputElement>(null);
 
 	const handleButtonClick = () => {
@@ -58,7 +57,7 @@ export function UploadComputer({uploadedFiles, addFiles}: UploadProps) {
 	);
 }
 
-export function UploadLink({uploadedFiles, addFiles}: UploadProps) {
+export function UploadLink({addFiles}: UploadProps) {
 	const [url, setUrl] = useState('');
 
 	const handleButtonClick = async () => {
@@ -84,7 +83,7 @@ export function UploadLink({uploadedFiles, addFiles}: UploadProps) {
 	);
 }
 
-export function UploadCamera({uploadedFiles, addFiles}: UploadProps) {
+export function UploadCamera({addFiles}: UploadProps) {
 	return <button
 		className="p-2 m-1 rounded hover:bg-gray-700 transition-all duration-300 flex flex-col items-center justify-center w-24">
 		<BsCameraFill size={20}/>
@@ -92,7 +91,7 @@ export function UploadCamera({uploadedFiles, addFiles}: UploadProps) {
 	</button>;
 }
 
-export function UploadScreen({uploadedFiles, addFiles}: UploadProps) {
+export function UploadScreen({addFiles}: UploadProps) {
 	return <button
 		className="p-2 m-1 rounded hover:bg-gray-700 transition-all duration-300 flex flex-col items-center justify-center w-24">
 		<BsDisplayFill size={20}/>
@@ -100,7 +99,7 @@ export function UploadScreen({uploadedFiles, addFiles}: UploadProps) {
 	</button>;
 }
 
-export function UploadMicrophone({uploadedFiles, addFiles}: UploadProps) {
+export function UploadMicrophone({addFiles}: UploadProps) {
 	return <button
 		className="p-2 m-1 rounded hover:bg-gray-700 transition-all duration-300 flex flex-col items-center justify-center w-24">
 		<BsMicFill size={20}/>

@@ -19,7 +19,7 @@ export function PrimaryActionButton({text, isDisabled, disabledPopup, ...props}:
 	};
 
 	return (
-		<div className={"flex flex-col items-center justify-center absolute bottom-8"}>
+		<div className={"flex flex-col items-center justify-center bottom-8"}>
 			<button
 				disabled={isDisabled}
 				className={"bg-blue-500 disabled:opacity-50 hover:bg-blue-600 disabled:hover:bg-amber-500 text-white font-bold py-2 px-4 rounded " +

@@ -44,17 +44,17 @@ html, body {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #888;
+  background: #555;
   border-radius: 7px;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #555;
+  background: #888;
   border-radius: 7px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #444;
+  background: #777;
 }

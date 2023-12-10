@@ -3,17 +3,20 @@ import React, {useCallback, useState} from "react";
 export function UploadContainer({children, addFiles}: { children: React.ReactNode, addFiles: (files: File[]) => void }) {
 	const [isDragging, setIsDragging] = useState(false);
 
+	// Prevent default behavior when dragging files over the window
 	const dragOverHandler = useCallback((event: React.DragEvent) => {
 		event.preventDefault();
 	}, []);
 
+	// Set isDragging to true when the mouse pointer enters the container
 	const dragEnterHandler = useCallback(() => {
 		setIsDragging(true);
 	}, []);
 
+	// Set isDragging to false when the mouse pointer leaves the container
 	const dragLeaveHandler = useCallback((event: React.DragEvent) => {
+		// If the mouse pointer is entering a child element, do not execute the rest of the code
 		if (event.currentTarget.contains(event.relatedTarget as Node)) {
-			// If the mouse pointer is entering a child element, do not execute the rest of the code
 			return;
 		}
 		setIsDragging(false);
@@ -25,9 +28,9 @@ export function UploadContainer({children, addFiles}: { children: React.ReactNod
 
 		if (event.dataTransfer.items) {
 			const files = Array.from(event.dataTransfer.items)
-				.filter((item) => item.kind === 'file')
-				.map((item) => item.getAsFile())
-				.filter((file): file is File => file !== null);
+				.filter((item) => item.kind === 'file') // Only accept files
+				.map((item) => item.getAsFile()) // Convert DataTransferItem to File
+				.filter((file): file is File => file !== null); // Remove null values
 			addFiles(files);
 		}
 	}, [addFiles]);
