@@ -2,7 +2,7 @@ import {BsFileEarmarkBinaryFill} from "react-icons/bs";
 import React, {useState, forwardRef} from "react";
 import {motion} from "framer-motion";
 
-export const FileDisplay = forwardRef(function (props: { onClick: () => void, file: File }, ref: any) {
+export const FileDisplay = forwardRef(function FileDisplay(props: { onClick: () => void, file: File }, ref: any) {
 	return <motion.li
 		ref={ref}
 		className="flex flex-row items-center justify-between p-2 m-1 my-1.5 rounded-lg bg-neutral-700 text-neutral-100 hover:text-red-500 transition-colors duration-500"

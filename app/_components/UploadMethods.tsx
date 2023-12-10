@@ -1,10 +1,10 @@
 import {BsCameraFill, BsDisplayFill, BsFolderFill, BsLink45Deg, BsMicFill} from "react-icons/bs";
 import React, {useState} from "react";
 
-export const UploadMethods = React.memo((props: {
+export const UploadMethods = React.memo(function UploadMethods(props: {
 	uploadedFiles: File[],
 	addFiles: (files: File[]) => void,
-}) => {
+}) {
 	return <div id={"uploadMethodsContainer"}>
 		<p className="text-neutral-200 text-center"><span
 			className={"font-semibold text-blue-200"}>Drag and drop</span> your files here, or import from:</p>
