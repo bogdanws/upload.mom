@@ -1,6 +1,6 @@
 import {BsCameraFill, BsDisplayFill, BsFolderFill, BsLink45Deg, BsMicFill} from "react-icons/bs";
 import React from "react";
-import {UploadSteps} from "@/app/_components/UploadSteps";
+import {UploadSteps} from "./UploadSteps";
 
 export const UploadMethods = React.memo(function UploadMethods(props: {
 	uploadedFiles: File[],

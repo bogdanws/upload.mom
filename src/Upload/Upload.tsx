@@ -1,12 +1,12 @@
 "use client";
 import "./Upload.scss";
-import {PrimaryActionButton} from "@/components/PrimaryActionButton";
-import {UploadMethods} from "@/app/_components/UploadMethods";
+import {PrimaryActionButton} from "../components/PrimaryActionButton";
+import {UploadMethods} from "./UploadMethods";
 import React, {useCallback, useEffect, useState} from "react";
-import {UploadContainer} from "@/app/_components/UploadContainer";
-import {FileDisplay} from "@/app/_components/FileDisplay";
+import {UploadContainer} from "./UploadContainer";
+import {FileDisplay} from "./FileDisplay";
 import {AnimatePresence} from "framer-motion";
-import {UploadSteps} from "@/app/_components/UploadSteps";
+import {UploadSteps} from "./UploadSteps";
 
 export function Upload() {
 	const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);

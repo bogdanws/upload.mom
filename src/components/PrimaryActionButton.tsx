@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {PopupNotification} from "@/components/PopupNotification";
+import {PopupNotification} from "./PopupNotification";
 
 type PrimaryActionButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 	text: string,
