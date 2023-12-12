@@ -54,12 +54,24 @@ export function Upload() {
 				<ul
 					className={"w-full my-2 flex-1 overflow-y-scroll overflow-x-hidden relative"}>
 					<AnimatePresence mode="popLayout">
-						{uploadedFiles.map((file, index) =>
+						{uploadedFiles.map((file) =>
 							<FileDisplay key={file.name} onClick={() => deleteFile(file)} file={file}/>
 						)}
 					</AnimatePresence>
 				</ul>
 				<PrimaryActionButton text={"Upload"}/>
+			</>}
+			{uploadStep === UploadSteps.UploadLink && <>
+				<p className="m-5 text-2xl text-neutral-100 text-center font-semibold">Upload from a link</p>
+				<div className={"w-2/3 max-sm:w-full flex flex-row max-sm:flex-col items-center justify-center flex-1"}>
+					<input
+						type="text"
+						className="w-full bg-gray-700 text-white rounded p-2 m-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+						placeholder="Direct link to file"
+					/>
+					<PrimaryActionButton text={"Upload"}/>
+				</div>
+				<PrimaryActionButton text={"Back"} onClick={() => setUploadStep(UploadSteps.UploadMethods)}/>
 			</>}
 		</UploadContainer>
 	);
