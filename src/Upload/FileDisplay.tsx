@@ -1,5 +1,5 @@
 import {BsFileEarmarkBinaryFill} from "react-icons/bs";
-import React, {useState, forwardRef} from "react";
+import React, {forwardRef} from "react";
 import {motion} from "framer-motion";
 
 export const FileDisplay = forwardRef(function FileDisplay(props: { onClick: () => void, file: File }, ref: any) {

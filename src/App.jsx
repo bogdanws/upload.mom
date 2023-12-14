@@ -1,10 +1,13 @@
 import './App.css'
 import {Upload} from "./Upload/Upload.tsx";
+import {Route, Routes} from "react-router-dom";
 
 function App() {
-  return <div className={"absolute w-full h-full inset-0 overflow-hidden flex items-center justify-center flex-col bg-neutral-900"}>
-    <Upload />
-  </div>;
+  return <Routes>
+    <Route path="/">
+      <Route index element={<Upload/>}/>
+    </Route>
+  </Routes>
 }
 
 export default App

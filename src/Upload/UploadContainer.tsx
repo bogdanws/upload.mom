@@ -1,6 +1,9 @@
 import React, {useCallback, useState} from "react";
 
-export function UploadContainer({children, addFiles}: { children: React.ReactNode, addFiles: (files: File[]) => void }) {
+export function UploadContainer({children, addFiles}: {
+	children: React.ReactNode,
+	addFiles: (files: File[]) => void
+}) {
 	const [isDragging, setIsDragging] = useState(false);
 
 	// Prevent default behavior when dragging files over the window
@@ -36,15 +39,18 @@ export function UploadContainer({children, addFiles}: { children: React.ReactNod
 	}, [addFiles]);
 
 	return <div
-		className={`uploadOuterContainer p-1 ${isDragging ? 'bg-gray-800' : 'bg-neutral-800'} transition duration-300 rounded flex flex-col items-center justify-center relative`}
-		onDragOver={dragOverHandler}
-		onDrop={dropHandler}
-		onDragEnter={dragEnterHandler}
-		onDragLeave={dragLeaveHandler}
-	>
+		className={"absolute w-full h-full inset-0 overflow-hidden flex items-center justify-center flex-col bg-neutral-900"}>
 		<div
-			className={`uploadInnerContainer p-7 pt-4 border-2 ${isDragging ? 'border-blue-500' : 'border-neutral-500'} border-dotted rounded transition duration-300 flex flex-col items-center justify-center`}>
-			{children}
+			className={`uploadOuterContainer p-1 ${isDragging ? 'bg-gray-800' : 'bg-neutral-800'} transition duration-300 rounded flex flex-col items-center justify-center relative`}
+			onDragOver={dragOverHandler}
+			onDrop={dropHandler}
+			onDragEnter={dragEnterHandler}
+			onDragLeave={dragLeaveHandler}
+		>
+			<div
+				className={`uploadInnerContainer p-7 pt-4 border-2 ${isDragging ? 'border-blue-500' : 'border-neutral-500'} border-dotted rounded transition duration-300 flex flex-col items-center justify-center`}>
+				{children}
+			</div>
 		</div>
 	</div>;
 }
