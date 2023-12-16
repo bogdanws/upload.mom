@@ -1,9 +1,8 @@
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useState, useContext} from "react";
+import {UploadContext} from "@/app/(upload)/UploadContext";
 
-export function UploadContainer({children, addFiles}: {
-	children: React.ReactNode,
-	addFiles: (files: File[]) => void
-}) {
+export function UploadContainer({children}: { children: React.ReactNode }) {
+	const {dispatch} = useContext(UploadContext);
 	const [isDragging, setIsDragging] = useState(false);
 
 	// Prevent default behavior when dragging files over the window
@@ -34,9 +33,11 @@ export function UploadContainer({children, addFiles}: {
 				.filter((item) => item.kind === 'file') // Only accept files
 				.map((item) => item.getAsFile()) // Convert DataTransferItem to File
 				.filter((file): file is File => file !== null); // Remove null values
-			addFiles(files);
+
+			// add files to the upload context
+			dispatch({type: 'ADD_FILES', files});
 		}
-	}, [addFiles]);
+	}, [dispatch]);
 
 	return <div
 		className={"absolute w-full h-full inset-0 overflow-hidden flex items-center justify-center flex-col bg-neutral-900"}>
@@ -46,6 +47,8 @@ export function UploadContainer({children, addFiles}: {
 			onDrop={dropHandler}
 			onDragEnter={dragEnterHandler}
 			onDragLeave={dragLeaveHandler}
+			role={"menu"}
+			tabIndex={0}
 		>
 			<div
 				className={`uploadInnerContainer p-7 pt-4 border-2 ${isDragging ? 'border-blue-500' : 'border-neutral-500'} border-dotted rounded transition duration-300 flex flex-col items-center justify-center`}>

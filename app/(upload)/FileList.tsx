@@ -1,8 +1,31 @@
 import {BsFileEarmarkBinaryFill} from "react-icons/bs";
-import React, {forwardRef} from "react";
-import {motion} from "framer-motion";
+import React, {forwardRef, useContext} from "react";
+import {AnimatePresence, motion} from "framer-motion";
+import {PrimaryActionButton} from "@/components/PrimaryActionButton";
+import {UploadContext} from "@/app/(upload)/UploadContext";
 
-export const FileDisplay = forwardRef(function FileDisplay(props: { onClick: () => void, file: File }, ref: any) {
+export function FileList(props: { onClick: () => void}) {
+	const {state, dispatch} = useContext(UploadContext);
+	const deleteFile = (file: File) => dispatch({type: "REMOVE_FILE", file});
+
+	return <>
+		<div className="w-full flex flex-row items-center justify-between">
+			<p className="text-neutral-200 text-center">Click on a file to <span className="text-red-300">remove</span> it
+			</p>
+			<PrimaryActionButton text={"Add more"} onClick={props.onClick}/>
+		</div>
+		{/*	show all files*/}
+		<ul
+			className={"w-full my-2 flex-1 overflow-y-scroll overflow-x-hidden relative"}>
+			<AnimatePresence mode="popLayout">
+				{state.map((file) => <File key={file.name} onClick={() => deleteFile(file)} file={file}/>)}
+			</AnimatePresence>
+		</ul>
+		<PrimaryActionButton text={"Upload"}/>
+	</>;
+}
+
+export const File = forwardRef(function FileDisplay(props: { onClick: () => void, file: File }, ref: any) {
 	return <motion.li
 		ref={ref}
 		className="flex flex-row items-center justify-between p-2 m-1 my-1.5 rounded-lg bg-neutral-700 text-neutral-100 hover:text-red-500 transition-colors duration-500"
@@ -41,3 +64,4 @@ function convertBytes(bytes: number) {
 
 	return `${(bytes / (1024 ** i)).toFixed(1)} ${sizes[i]}`;
 }
+
