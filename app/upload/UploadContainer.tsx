@@ -1,5 +1,5 @@
-import React, {useCallback, useState, useContext} from "react";
-import {UploadContext} from "@/app/(upload)/UploadContext";
+import React, {useCallback, useContext, useState} from "react";
+import {UploadContext} from "@/app/upload/UploadContext";
 
 export function UploadContainer({children}: { children: React.ReactNode }) {
 	const {dispatch} = useContext(UploadContext);

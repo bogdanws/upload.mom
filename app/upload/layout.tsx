@@ -1,7 +1,7 @@
 "use client";
 import {useMemo, useReducer} from "react";
-import {UploadContext, uploadReducer} from "@/app/(upload)/UploadContext";
-import {UploadContainer} from "@/app/(upload)/UploadContainer";
+import {UploadContext, uploadReducer} from "@/app/upload/UploadContext";
+import {UploadContainer} from "@/app/upload/UploadContainer";
 import "./Upload.scss";
 
 export default function Upload({children}: {
