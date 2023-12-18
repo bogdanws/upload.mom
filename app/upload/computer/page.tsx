@@ -35,8 +35,8 @@ export default function Computer() {
 			multiple
 			onChange={handleFileChange}
 		/>
+		<h1 className="m-5 text-xl text-neutral-100 text-center font-semibold">Upload from your computer</h1>
 		<div className={"w-2/3 max-sm:w-full flex flex-col items-center justify-center flex-1"}>
-			<p className="m-5 text-2xl text-neutral-100 text-center font-semibold">Choose files to upload</p>
 			<PrimaryActionButton text={"Select files"} onClick={showFilePicker}/>
 		</div>
 		<PrimaryActionButton url={"/upload"} text={"Back"}/>

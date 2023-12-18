@@ -34,7 +34,7 @@ export default function Link() {
 	}, [link, dispatch, router]);
 
 	return <>
-		<p className="m-5 text-2xl text-neutral-100 text-center font-semibold">Upload from a link</p>
+		<h1 className="m-5 text-xl text-neutral-100 text-center font-semibold">Upload from a link</h1>
 		<div className={"w-2/3 max-sm:w-full flex flex-row max-sm:flex-col items-center justify-center flex-1"}>
 			<input
 				type="text"
