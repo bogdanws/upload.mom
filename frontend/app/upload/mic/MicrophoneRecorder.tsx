@@ -1,7 +1,7 @@
 "use client";
 import { useContext, useEffect, useState } from "react";
 import { PrimaryActionButton } from "@/components/PrimaryActionButton";
-import { UploadContext } from "@/app/upload/UploadContext";
+import { UploadContext } from "../UploadContext";
 import { useRouter } from "next/navigation";
 
 type Stream = MediaStream | null;

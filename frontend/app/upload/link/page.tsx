@@ -1,7 +1,7 @@
 "use client";
 import {PrimaryActionButton} from "@/components/PrimaryActionButton";
 import React, {useCallback, useContext} from "react";
-import {UploadContext} from "@/app/upload/UploadContext";
+import {UploadContext} from "../UploadContext";
 import {useRouter} from "next/navigation";
 
 export default function Link() {

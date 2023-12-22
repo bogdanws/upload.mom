@@ -4,12 +4,12 @@ This is a file upload project built with [Next.js](https://nextjs.org/) and Type
 
 ## Getting Started
 
-First, run the development server:
+To run this project locally, make sure you have Docker installed. Then, run the following commands:
 
 ```bash
-npm run dev
+
 ```
-Open http://localhost:3000 with your browser to see the result.  You can start editing the page by modifying app/page.tsx. The page auto-updates as you edit the file.  
+Open http://localhost:3000 with your browser to see the result.
 
 ## Features
 * Drag and drop file upload

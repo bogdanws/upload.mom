@@ -1,5 +1,5 @@
 import {PrimaryActionButton} from "@/components/PrimaryActionButton";
-import {MicrophoneRecorder} from "@/app/upload/mic/MicrophoneRecorder";
+import {MicrophoneRecorder} from "./MicrophoneRecorder";
 
 export default function Page() {
 	return <div className={"flex flex-col items-center justify-center flex-1"}>

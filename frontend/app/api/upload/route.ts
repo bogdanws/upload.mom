@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
 
 	// read the FormData from the request
 	const formData = await req.formData();
-	const files = formData.getAll("file") as File[];
+	const files = formData.getAll("files") as File[];
 
 	const uploadPath = path.join(cwd, "files");
 	await fs.mkdir(path.join(uploadPath, id), {recursive: true});

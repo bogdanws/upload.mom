@@ -33,7 +33,7 @@ export function ScreenRecorder() {
 
 	const startScreenCapture = async () => {
 		try {
-			const stream: Stream = await navigator.mediaDevices.getDisplayMedia({video: true, audio: true});
+			const stream: Stream = await navigator.mediaDevices.getDisplayMedia({video: true, audio: false});
 			setScreenStream(stream);
 		} catch (error) {
 			console.error('Error accessing the screen', error);

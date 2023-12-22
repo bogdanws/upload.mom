@@ -28,6 +28,39 @@ export default function ViewFiles() {
 				{state.map((file) => <File key={file.name} onClick={() => dispatch({type: "REMOVE_FILE", file})} file={file}/>)}
 			</AnimatePresence>
 		</ul>
-		<PrimaryActionButton text={"Upload"}/>
+		<PrimaryActionButton text={"Upload"} onClick={() => {
+			uploadFiles(state).then((res) => {
+				console.log(res);
+				router.push("/" + res.id);
+			});
+		}
+		}/>
 	</>;
+}
+
+async function uploadFiles(files: File[]): Promise<any> {
+	try {
+		// Create a new FormData instance
+		const formData = new FormData();
+
+		// Append each file to the FormData instance
+		files.forEach((file) => formData.append("files", file));
+
+		// Send a POST request to the server with the FormData instance
+		const res = await fetch("/api/upload", {
+			method: "POST",
+			body: formData
+		});
+
+		// If the request was not successful, throw an error
+		if (!res.ok) {
+			throw new Error(await res.text());
+		}
+
+		// Return the server response as a JSON object
+		return await res.json();
+	} catch (error) {
+		// Log any errors that occur during the file upload
+		console.error('Error uploading files:', error);
+	}
 }
