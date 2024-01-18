@@ -16,6 +16,7 @@ services:
       POSTGRES_DB: postgres
     volumes:
       - db-data:/var/lib/postgresql/data
+
   nginx:
     image: nginx
     ports:

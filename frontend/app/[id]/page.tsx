@@ -1,22 +1,15 @@
-import fs from 'fs/promises';
-import path from 'path';
+import {FileDisplay} from "@/app/[id]/FileDisplay";
 
-export default async function Page({ params: { id } }: { params: { id: string } }) {
-  try {
-    const dir = path.join(process.cwd(), 'files', id);
-    const files = await fs.readdir(dir);
+export default function Page({params: {id}}: { params: { id: string } }) {
 
-    return (
-      <>
-        <h1>Files in {id}:</h1>
-        <ul>
-          {files.map((file) => (
-            <li key={file}>{file}</li>
-          ))}
-        </ul>
-      </>
-    );
-  } catch (error) {
-    return <div>Error loading files</div>;
-  }
+	return <>
+		<FileDisplay id={id}/>
+		<DownloadButton id={id}/>
+	</>
+}
+
+function DownloadButton({id}: {id: string}) {
+	return <a target="_blank" href={"/api/download/" + id}>
+		Download files
+	</a>;
 }

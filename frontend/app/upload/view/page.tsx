@@ -5,6 +5,7 @@ import {PrimaryActionButton} from "@/components/PrimaryActionButton";
 import {AnimatePresence} from "framer-motion";
 import {File} from "@/app/upload/view/File";
 import {useRouter} from "next/navigation";
+import {uploadFiles} from "@/utils/upload";
 
 export default function ViewFiles() {
 	const router = useRouter();
@@ -32,35 +33,11 @@ export default function ViewFiles() {
 			uploadFiles(state).then((res) => {
 				console.log(res);
 				router.push("/" + res.id);
+			}).catch((err) => {
+				console.error(err);
 			});
 		}
 		}/>
 	</>;
 }
 
-async function uploadFiles(files: File[]): Promise<any> {
-	try {
-		// Create a new FormData instance
-		const formData = new FormData();
-
-		// Append each file to the FormData instance
-		files.forEach((file) => formData.append("files", file));
-
-		// Send a POST request to the server with the FormData instance
-		const res = await fetch("/api/upload", {
-			method: "POST",
-			body: formData
-		});
-
-		// If the request was not successful, throw an error
-		if (!res.ok) {
-			throw new Error(await res.text());
-		}
-
-		// Return the server response as a JSON object
-		return await res.json();
-	} catch (error) {
-		// Log any errors that occur during the file upload
-		console.error('Error uploading files:', error);
-	}
-}
