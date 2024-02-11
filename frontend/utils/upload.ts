@@ -18,7 +18,9 @@ export async function uploadFiles(files: File[]): Promise<any> {
 		}
 
 		// Return the server response as a JSON object
-		return await res.json();
+		const jsonRes = await res.json();
+		alert("Files uploaded successfully!");
+		return jsonRes;
 	} catch (error) {
 		// Log any errors that occur during the file upload
 		console.error('Error uploading files:', error);

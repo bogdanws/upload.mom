@@ -58,3 +58,20 @@ html, body {
 ::-webkit-scrollbar-thumb:hover {
   background: #777;
 }
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.shimmer {
+  animation: shimmer 3s infinite linear;
+  background: #f6f7f8;
+  background: linear-gradient(to right, #747474 8%, #dddddd 18%, #747474 33%);
+  background-size: 1000px 100%;
+  border-radius: 5px;
+}

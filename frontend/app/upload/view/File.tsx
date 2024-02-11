@@ -1,6 +1,7 @@
 import {BsFileEarmarkBinaryFill} from "react-icons/bs";
 import React, {forwardRef} from "react";
 import {motion} from "framer-motion";
+import {convertBytes} from "@/utils/convertBytes";
 
 export const File = forwardRef(function FileDisplay(props: { onClick: () => void, file: File }, ref: any) {
 	return <motion.li
@@ -24,21 +25,4 @@ export const File = forwardRef(function FileDisplay(props: { onClick: () => void
 		<p className="text-neutral-200 ml-2">{convertBytes(props.file.size)}</p>
 	</motion.li>;
 });
-
-function convertBytes(bytes: number) {
-	const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
-
-	if (bytes === 0) {
-		return "n/a";
-	}
-
-	// Determine the size index
-	const i = Math.floor(Math.log(bytes) / Math.log(1024));
-
-	if (i === 0) {
-		return `${bytes} ${sizes[i]}`;
-	}
-
-	return `${(bytes / (1024 ** i)).toFixed(1)} ${sizes[i]}`;
-}
 

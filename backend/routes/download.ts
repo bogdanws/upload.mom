@@ -1,13 +1,20 @@
 import express from 'express';
 import path from 'path';
 import fs from 'fs';
+import AdmZip from 'adm-zip';
 
 const router = express.Router();
 
 router.get('/files/:id', (req, res) => {
 	const fileId = req.params.id;
-	const filePath = getFilePathById(fileId);
+	const folderPath = getFilePathById(fileId);
 
+	if (!folderPath) {
+		res.status(404).send('File not found');
+		return;
+	}
+
+	const filePath = getFileInsideFolder(folderPath);
 	if (!filePath) {
 		res.status(404).send('File not found');
 		return;
@@ -19,14 +26,28 @@ router.get('/files/:id', (req, res) => {
 			return;
 		}
 
-		fs.readdir(filePath, (err, files) => {
-			if (err) {
-				res.status(500).send('Error reading directory');
-				return;
-			}
+		let files : {name: string, size: number}[];
+		// check if it contains a single file or a zip archive
+		if (!filePath.endsWith('.zip')) {
+			// send the file name and size
+			const stats = fs.statSync(filePath);
+			files = [{
+				name: path.basename(filePath),
+				size: stats.size
+			}];
+		} else {
+			const zip = new AdmZip(filePath);
+			const zipEntries = zip.getEntries();
 
-			res.json({files});
-		});
+			files = zipEntries.map(entry => {
+				return {
+					name: entry.entryName,
+					size: entry.header.size
+				};
+			});
+		}
+
+		res.json({files});
 	});
 });
 
@@ -64,6 +85,18 @@ function getFilePathById(id: string): string | null {
 	}
 	// if it doesn't, return null
 	return null;
+}
+
+function getFileInsideFolder(folderPath: string): string | null {
+	// check if the folder exists
+	if (!fs.existsSync(folderPath)) {
+		return null;
+	}
+
+	// get a list of all files in the directory
+	const files = fs.readdirSync(folderPath);
+	// return the first file
+	return folderPath + '/' + files[0];
 }
 
 export default router;

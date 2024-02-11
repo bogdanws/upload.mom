@@ -34,32 +34,38 @@ router.post('/', upload.array('files'), async (req, res) => {
 	}
 
 	const uploadId = generateRandomString(5);
-	// Create a new zip archive
-	const archive = archiver('zip', {
-		zlib: {level: 9} // Sets the compression level.
-	});
 
 	fs.mkdirSync(`uploads/${uploadId}`, {recursive: true});
-	const output = fs.createWriteStream(`uploads/${uploadId}/${uploadId}.zip`);
-
-	archive.pipe(output);
-
-	// Add each file to the archive
-	for (const file of files) {
-		const oldPath = file.path;
-		archive.file(oldPath, {name: file.originalname});
-	}
-
-	// Finalize the archive
-	await archive.finalize();
-
-	try {
-		await new Promise((resolve, reject) => {
-			output.on('close', resolve);
-			output.on('error', reject);
+	// Check if it's a single file or multiple files
+	if (files.length > 1) {
+		// Create a new zip archive
+		const archive = archiver('zip', {
+			zlib: {level: 9} // Sets the compression level.
 		});
-	} catch (error) {
-		console.error(`Error zipping files`, error);
+		const output = fs.createWriteStream(`uploads/${uploadId}/${uploadId}.zip`);
+
+		archive.pipe(output);
+
+		// Add each file to the archive
+		for (const file of files) {
+			const oldPath = file.path;
+			archive.file(oldPath, {name: file.originalname});
+		}
+
+		// Finalize the archive
+		await archive.finalize();
+
+		try {
+			await new Promise((resolve, reject) => {
+				output.on('close', resolve);
+				output.on('error', reject);
+			});
+		} catch (error) {
+			console.error(`Error zipping files`, error);
+		}
+	} else {
+		// If it's a single file, move it to the new folder
+		fs.renameSync(files[0].path, `uploads/${uploadId}/${files[0].originalname}`);
 	}
 
 	// Once you're done processing the files, send a response to the client
