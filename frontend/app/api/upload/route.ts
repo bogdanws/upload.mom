@@ -1,15 +1,13 @@
-import {NextRequest} from "next/server";
-import fs from 'fs/promises'
-import path from 'path'
+import {NextRequest, NextResponse} from "next/server";
+import B2 from "backblaze-b2";
+import jszip from "jszip";
 
-function makeid(length: number) {
+function generateRandomString(length: number): string {
 	let result = '';
-	const characters = 'abcdefghijklmnopqrstuvwxyz123456789';
+	const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
 	const charactersLength = characters.length;
-	let counter = 0;
-	while (counter < length) {
+	for (let i = 0; i < length; i++) {
 		result += characters.charAt(Math.floor(Math.random() * charactersLength));
-		counter += 1;
 	}
 	return result;
 }
@@ -17,26 +15,59 @@ function makeid(length: number) {
 const cwd = process.cwd();
 
 export async function POST(req: NextRequest) {
-	const id = makeid(8);
-
-	// read the FormData from the request
-	const formData = await req.formData();
-	const files = formData.getAll("files") as File[];
-
-	const uploadPath = path.join(cwd, "files");
-	await fs.mkdir(path.join(uploadPath, id), {recursive: true});
-	// read the files into a buffer
+	const files = (await req.formData()).getAll('files') as File[];
+	if (!files) {
+		return NextResponse.json({error: 'No files found'}, {status: 400});
+	}
+	let buffers = [];
 	for (const file of files) {
-		const bytes = await file.arrayBuffer();
-		const buffer = Buffer.from(bytes);
-		// write the file to the file system
-		// make a directory for the ID
-		try {
-			await fs.writeFile(path.join(uploadPath, id, file.name), buffer);
-		} catch (e) {
-			return Response.json({message: "Error saving file"}, {status: 500});
-		}
+		buffers.push(await file.arrayBuffer());
 	}
 
-	return Response.json({id: id}, {status: 200});
+	const uploadId = generateRandomString(5);
+
+	const data = await upload(files, uploadId);
+	return NextResponse.json({id: uploadId});
+}
+
+async function upload(files: File[], id: string) {
+	const b2 = new B2({
+		applicationKeyId: process.env.BACKBLAZE_KEY_ID!,
+		applicationKey: process.env.BACKBLAZE_APP_KEY!,
+	});
+
+	const {data: authData} = await b2.authorize();
+	const {data: uploadUrl} = await b2.getUploadUrl({bucketId: process.env.BACKBLAZE_BUCKET_ID!});
+	const bucket = await b2.getBucket({bucketName: process.env.BACKBLAZE_BUCKET_NAME!});
+
+	const zip = new jszip();
+	for (const file of files) {
+		zip.file(file.name, file.arrayBuffer());
+	}
+
+	const buffer = await zip.generateAsync({type: 'nodebuffer'});
+	const {data} = await b2.uploadFile({
+		uploadUrl: uploadUrl.uploadUrl!,
+		uploadAuthToken: uploadUrl.authorizationToken!,
+		fileName: `${id}.zip`,
+		data: buffer,
+	});
+
+	return data;
+}
+
+async function getFileUrl(id: string) {
+	const b2 = new B2({
+		applicationKeyId: process.env.BACKBLAZE_KEY_ID!,
+		applicationKey: process.env.BACKBLAZE_APP_KEY!,
+	});
+
+	const {data: authData} = await b2.authorize();
+	const {data: downloadUrl} = await b2.getDownloadAuthorization({
+		bucketId: process.env.BACKBLAZE_BUCKET_ID!,
+		fileNamePrefix: id,
+		validDurationInSeconds: 3600,
+	});
+
+	return downloadUrl;
 }
