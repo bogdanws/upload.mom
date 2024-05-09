@@ -7,7 +7,7 @@ export async function uploadFiles(files: File[]): Promise<any> {
 		files.forEach((file) => formData.append("files", file));
 
 		// Send a POST request to the server with the FormData instance
-		const res = await fetch("/api/upload", {
+		const res = await fetch(process.env.NEXT_PUBLIC_STORAGE_HOST + "/api/upload", {
 			method: "POST",
 			body: formData
 		});
@@ -18,9 +18,9 @@ export async function uploadFiles(files: File[]): Promise<any> {
 		}
 
 		// Return the server response as a JSON object
-		const jsonRes = await res.json();
+		//const jsonRes = await res.json();
 		alert("Files uploaded successfully!");
-		return jsonRes;
+		return res;
 	} catch (error) {
 		// Log any errors that occur during the file upload
 		console.error('Error uploading files:', error);

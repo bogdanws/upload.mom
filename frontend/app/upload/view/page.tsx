@@ -30,9 +30,9 @@ export default function ViewFiles() {
 			</AnimatePresence>
 		</ul>
 		<PrimaryActionButton text={"Upload"} onClick={() => {
-			uploadFiles(state).then((res) => {
-				console.log(res);
-				router.push("/" + res.id);
+			uploadFiles(state).then(async (res) => {
+				res = await res.json();
+				router.push("/" + res.uploadId);
 			}).catch((err) => {
 				console.error(err);
 			});
