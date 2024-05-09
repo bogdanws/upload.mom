@@ -1,5 +1,6 @@
 using System.IO.Compression;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using upload.mom_Files.Models;
 
 namespace upload.mom_Files.Controllers;
@@ -9,10 +10,14 @@ namespace upload.mom_Files.Controllers;
 public class UploadController : ControllerBase
 {
     private readonly DatabaseContext _context;
+    private readonly ILogger<UploadController> _logger;
+    private StorageOptions _options;
 
-    public UploadController(DatabaseContext context)
+    public UploadController(DatabaseContext context, ILogger<UploadController> logger, IOptions<StorageOptions> options)
     {
         _context = context;
+        _logger = logger;
+        _options = options.Value;
     }
 
     [HttpPost]
@@ -21,7 +26,7 @@ public class UploadController : ControllerBase
         if (files.Length == 0) return BadRequest(new { error = "No files were provided" });
 
         // Define the path to save the file
-        var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+        var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), _options.UploadPath);
 
         // Ensure the directory exists
         Directory.CreateDirectory(uploadPath);
@@ -48,16 +53,29 @@ public class UploadController : ControllerBase
 
                 // Add the file to the zip
                 zip.CreateEntryFromFile(filePath, file.FileName);
+
+                // Delete the file from the upload directory
+                System.IO.File.Delete(filePath);
             }
         }
 
-        // Create a new file model
-        var fileModel = new UploadedFile(uploadId, files.Select(f => f.FileName).ToArray(), zipPath,
-            (int)new FileInfo(zipPath).Length, DateTime.UtcNow, 2 * 60 * 60);
+        // Check how many uploads have been made in the last 24 hours
+        string ipAddress = Request.HttpContext.Connection.RemoteIpAddress?.ToString() ?? "Unknown";
+        var uploadsToday =
+            _context.Files.Count(f => f.IpAddress == ipAddress && f.UploadDate > DateTime.UtcNow.AddDays(-1));
+        // Check if the user has exceeded the upload limit
+        if (uploadsToday >= _options.MaxUploadsPerDay)
+            return BadRequest(new { error = "You have exceeded the upload limit" });
+
+        // Create a new UploadedFile object
+        var newFile = new UploadedFile(uploadId, files.Select(f => f.FileName).ToArray(), zipPath,
+            (int)new FileInfo(zipPath).Length, DateTime.UtcNow, _options.UploadLifetime, ipAddress);
 
         // Add the file to the database
-        _context.Files.Add(fileModel);
+        _context.Files.Add(newFile);
         await _context.SaveChangesAsync();
+
+        _logger.LogInformation($"Uploaded {files.Length} files with id {uploadId} from {ipAddress}");
 
         return Ok(new { uploadId });
     }
@@ -74,7 +92,6 @@ public class UploadController : ControllerBase
         if (_context.Files.Any(x => x.Id == uploadId))
             // Recursively call the method with a longer length
             return GenerateUploadString(length + 1);
-
 
         return uploadId;
     }

@@ -19,8 +19,9 @@ public class UploadedFile
 
     public DateTime UploadDate { get; set; }
     public int Lifetime { get; set; }
+    public string IpAddress { get; set; }
 
-    public UploadedFile(string id, string[] files, string path, int size, DateTime uploadDate, int lifetime)
+    public UploadedFile(string id, string[] files, string path, int size, DateTime uploadDate, int lifetime, string ipAddress)
     {
         Id = id;
         Files = files;
@@ -28,6 +29,7 @@ public class UploadedFile
         Size = size;
         UploadDate = uploadDate;
         Lifetime = lifetime;
+        IpAddress = ipAddress;
     }
 }
 

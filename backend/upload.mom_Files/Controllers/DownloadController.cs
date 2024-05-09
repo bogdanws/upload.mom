@@ -8,10 +8,12 @@ namespace upload.mom_Files.Controllers;
 public class DownloadController : ControllerBase
 {
     private readonly DatabaseContext _context;
+    private readonly ILogger<DownloadController> _logger;
 
-    public DownloadController(DatabaseContext context)
+    public DownloadController(DatabaseContext context, ILogger<DownloadController> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     [HttpGet("files")]
@@ -36,6 +38,9 @@ public class DownloadController : ControllerBase
 
         var path = file.Path;
         if (!System.IO.File.Exists(path)) return NotFound(new { error = "File does not exist on the server" });
+
+        string ipAddress = Request.HttpContext.Connection.RemoteIpAddress?.ToString() ?? "Unknown";
+        _logger.LogInformation($"File {file.Id} downloaded by {ipAddress}");
 
         var fileName = Path.GetFileName(path);
         return PhysicalFile(path, "application/zip", fileName);
