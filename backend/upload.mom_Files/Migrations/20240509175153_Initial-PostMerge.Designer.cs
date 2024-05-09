@@ -12,8 +12,8 @@ using upload.mom_Files;
 namespace upload.mom_Files.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240508201152_Initial")]
-    partial class Initial
+    [Migration("20240509175153_Initial-PostMerge")]
+    partial class InitialPostMerge
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,23 +27,21 @@ namespace upload.mom_Files.Migrations
 
             modelBuilder.Entity("upload.mom_Files.Models.UploadedFile", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasComment("Unique identifier for the file");
 
                     b.Property<string[]>("Files")
                         .IsRequired()
                         .HasColumnType("text[]");
 
+                    b.Property<string>("IpAddress")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<int>("Lifetime")
                         .HasColumnType("integer");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("Path")
                         .IsRequired()
