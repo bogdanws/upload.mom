@@ -40,7 +40,7 @@ public class DownloadController : ControllerBase
         if (!System.IO.File.Exists(path)) return NotFound(new { error = "File does not exist on the server" });
 
         string ipAddress = Request.HttpContext.Connection.RemoteIpAddress?.ToString() ?? "Unknown";
-        _logger.LogInformation($"File {file.Id} downloaded by {ipAddress}");
+        _logger.LogInformation("File {fileId} downloaded by {ipAddress}", id, ipAddress);
 
         var fileName = Path.GetFileName(path);
         return PhysicalFile(path, "application/zip", fileName);

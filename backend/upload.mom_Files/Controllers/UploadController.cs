@@ -75,7 +75,8 @@ public class UploadController : ControllerBase
         _context.Files.Add(newFile);
         await _context.SaveChangesAsync();
 
-        _logger.LogInformation($"Uploaded {files.Length} files with id {uploadId} from {ipAddress}");
+        _logger.LogInformation("Uploaded {filesCount} files with id {uploadId} from {ipAddress}", files.Length, uploadId,
+            ipAddress);
 
         return Ok(new { uploadId });
     }
